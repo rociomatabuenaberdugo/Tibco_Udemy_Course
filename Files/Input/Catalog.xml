@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Catalog xmlns = "http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Models/Catalog">
+	<Course xmlns = "http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Models/Course">
+		<id>1</id>
+		<author>Rocío Berdugo</author>
+		<title>Este es un título de ejemplo para un XML ficticio</title>
+		<genre>Ficción</genre>
+		<price>9.99</price>
+		<publishDate>2023-07-17</publishDate>
+	</Course>
+	<Course xmlns = "http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Models/Course">
+		<id>2</id>
+		<author>Jeroro</author>
+		<title>Mío</title>
+		<genre>Comedia/Romance</genre>
+		<price>199504.19</price>
+		<publishDate>2023-04-15</publishDate>
+	</Course>
+</Catalog>
