@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/MoveFilesRequest" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/MoveFilesResponse" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns2="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Response.xsd" xmlns:ns1="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Header">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/MoveFilesRequest" schemaLocation="/Resources/Schemas/Services/MoveFilesRequest.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/MoveFilesResponse" schemaLocation="/Resources/Schemas/Services/MoveFilesResponse.xsd"/>
+    <pd:name>Processes/Services/MoveFiles.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:MoveFilesRequest"/>
+    <pd:startX>123</pd:startX>
+    <pd:startY>90</pd:startY>
+    <pd:returnBindings>
+        <pfx2:MoveFilesResponse>
+            <xsl:copy-of select="$Start/pfx:MoveFilesRequest/ns1:Header"/>
+            <pfx2:Body>
+                <ns2:Response>
+                    <ns2:message>
+                        <xsl:value-of select="&quot;Files has been moved succesfully&quot;"/>
+                    </ns2:message>
+                    <ns2:responseStatus>
+                        <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                    </ns2:responseStatus>
+                    <ns2:data>
+                        <xsl:copy-of select="$Rename-File/ns:RenameActivityOutput/fileInfo"/>
+                    </ns2:data>
+                </ns2:Response>
+            </pfx2:Body>
+        </pfx2:MoveFilesResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:MoveFilesResponse"/>
+    <pd:endX>481</pd:endX>
+    <pd:endY>86</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1689663714298</pd:targetNamespace>
+    <pd:activity name="Rename File">
+        <pd:type>com.tibco.plugin.file.FileRenameActivity</pd:type>
+        <pd:resourceType>ae.activities.FileRenameActivity</pd:resourceType>
+        <pd:x>303</pd:x>
+        <pd:y>75</pd:y>
+        <config>
+            <overwrite>true</overwrite>
+        </config>
+        <pd:inputBindings>
+            <ns:RenameActivityConfig>
+                <fromFileName>
+                    <xsl:value-of select="concat($Start/pfx:MoveFilesRequest/pfx:Body/pfx:source/pfx:sourceDirectoryPath,$Start/pfx:MoveFilesRequest/pfx:Body/pfx:source/pfx:sourceFileName)"/>
+                </fromFileName>
+                <toFileName>
+                    <xsl:value-of select="concat($Start/pfx:MoveFilesRequest/pfx:Body/pfx:target/pfx:targetDirectoryPath,$Start/pfx:MoveFilesRequest/pfx:Body/pfx:target/pfx:targetFileName)"/>
+                </toFileName>
+            </ns:RenameActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Rename File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rename File</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/CopyFilesResponse" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/CopyFilesRequest" xmlns:ns="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Header" xmlns:pfx3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns2="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Response.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/CopyFilesResponse" schemaLocation="/Resources/Schemas/Services/CopyFilesResponse.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/CopyFilesRequest" schemaLocation="/Resources/Schemas/Services/CopyFilesRequest.xsd"/>
+    <pd:name>Processes/Services/CopyFiles.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:CopyFilesRequest"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <pfx:CopyFilesResponse>
+            <xsl:copy-of select="$Start/pfx2:CopyFilesRequest/ns:Header"/>
+            <pfx:Body>
+                <ns2:Response>
+                    <ns2:message>
+                        <xsl:value-of select="&quot;File has been copied OK&quot;"/>
+                    </ns2:message>
+                    <ns2:responseStatus>
+                        <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                    </ns2:responseStatus>
+                </ns2:Response>
+            </pfx:Body>
+        </pfx:CopyFilesResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:CopyFilesResponse"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1689662439347</pd:targetNamespace>
+    <pd:activity name="Copy File">
+        <pd:type>com.tibco.plugin.file.FileCopyActivity</pd:type>
+        <pd:resourceType>ae.activities.FileCopyActivity</pd:resourceType>
+        <pd:x>290</pd:x>
+        <pd:y>98</pd:y>
+        <config>
+            <overwrite>true</overwrite>
+        </config>
+        <pd:inputBindings>
+            <pfx3:CopyActivityConfig>
+                <fromFileName>
+                    <xsl:value-of select="concat($Start/pfx2:CopyFilesRequest/pfx2:Body/pfx2:source/pfx2:sourceDirectoryPath,$Start/pfx2:CopyFilesRequest/pfx2:Body/pfx2:source/pfx2:sourceFileName)"/>
+                </fromFileName>
+                <toFileName>
+                    <xsl:value-of select="concat($Start/pfx2:CopyFilesRequest/pfx2:Body/pfx2:target/pfx2:targetDirectoryPath,$Start/pfx2:CopyFilesRequest/pfx2:Body/pfx2:target/pfx2:targetFileName)"/>
+                </toFileName>
+            </pfx3:CopyActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Copy File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Copy File</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
