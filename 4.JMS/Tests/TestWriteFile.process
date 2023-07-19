@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Header" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Context" xmlns:ns="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/SharedProcesses/WriteToFileRequest" xmlns:pfx3="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Services/WriteFileRequest" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>Tests/TestWriteFile.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1689590435065</pd:targetNamespace>
+    <pd:activity name="WriteFile">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>295</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <processName>/Processes/Services/WriteFile.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:WriteFileRequest>
+                <pfx:Header>
+                    <pfx2:Context>
+                        <pfx2:correlationId>
+                            <xsl:value-of select="&quot;4051&quot;"/>
+                        </pfx2:correlationId>
+                    </pfx2:Context>
+                    <pfx:timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx:timestamp>
+                </pfx:Header>
+                <pfx3:Body>
+                    <pfx3:sourcePath>
+                        <xsl:value-of select="&quot;C:\tibco\designer\5.11\Files\Input\&quot;"/>
+                    </pfx3:sourcePath>
+                    <pfx3:sourceFileName>
+                        <xsl:value-of select="concat(&quot;file_&quot;,tib:format-dateTime(&quot;YYYYMMddHHmmss&quot;,current-dateTime()),&quot;.txt&quot;)"/>
+                    </pfx3:sourceFileName>
+                    <pfx3:message>
+                        <xsl:value-of select="&quot;this is the inside of the message&quot;"/>
+                    </pfx3:message>
+                </pfx3:Body>
+            </pfx3:WriteFileRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>WriteFile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WriteFile</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

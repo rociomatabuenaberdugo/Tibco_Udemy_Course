@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>germany</name>
+			<value>country='GER'</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1689751009150</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>portugal</name>
+			<value>country='PT'</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1689751009177</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>spain</name>
+			<value>country='SP'</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1689751009203</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

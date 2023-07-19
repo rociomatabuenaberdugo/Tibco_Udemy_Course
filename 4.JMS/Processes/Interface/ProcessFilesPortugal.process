@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Orchestration/ProcessFileRequest" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Context" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns1="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Header">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Orchestration/ProcessFileRequest" schemaLocation="/Resources/Schemas/Orchestration/ProcessFileRequest.xsd"/>
+    <pd:name>Processes/Interface/ProcessFilesPortugal.process</pd:name>
+    <pd:startName>JMS Topic Subscriber</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Topic Subscriber">
+        <pd:type>com.tibco.plugin.jms.JMSTopicEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSTopicEventSource</pd:resourceType>
+        <pd:x>101</pd:x>
+        <pd:y>205</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Resources/Connections/JMS/processFileTopicPublish%%</destination>
+                <durable>true</durable>
+                <subscriptionName>durable.portugal</subscriptionName>
+                <selector>%%Resources/Connections/JMS/messageSelector/portugal%%</selector>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/Connections/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <OutDataxsdString ref="pfx:ProcessFileRequest"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>504</pd:endX>
+    <pd:endY>213</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1689718457355</pd:targetNamespace>
+    <pd:activity name="Main_ProcessFiles">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>272</pd:x>
+        <pd:y>208</pd:y>
+        <config>
+            <processName>/Processes/Interface/Main_ProcessFiles.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:ProcessFileRequest>
+                <ns1:Header>
+                    <ns:Context>
+                        <ns:correlationId>
+                            <xsl:value-of select="&quot;401540154015&quot;"/>
+                        </ns:correlationId>
+                        <xsl:if test="$JMS-Topic-Subscriber/ns2:ActivityOutput/Body/pfx:ProcessFileRequest/ns1:Header/ns:Context/ns:correlationId">
+                            <ns:parentCorrelationId>
+                                <xsl:value-of select="$JMS-Topic-Subscriber/ns2:ActivityOutput/Body/pfx:ProcessFileRequest/ns1:Header/ns:Context/ns:correlationId"/>
+                            </ns:parentCorrelationId>
+                        </xsl:if>
+                    </ns:Context>
+                    <ns1:timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns1:timestamp>
+                </ns1:Header>
+                <xsl:copy-of select="$JMS-Topic-Subscriber/ns2:ActivityOutput/Body/pfx:ProcessFileRequest/pfx:Body"/>
+            </pfx:ProcessFileRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Topic Subscriber</pd:from>
+        <pd:to>Main_ProcessFiles</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Main_ProcessFiles</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
